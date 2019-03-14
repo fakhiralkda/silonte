@@ -2206,16 +2206,6 @@ static void msm_geni_serial_shutdown(struct uart_port *uport)
 	struct msm_geni_serial_port *msm_port = GET_DEV_PORT(uport);
 	int ret;
 
-	IPC_LOG_MSG(msm_port->ipc_log_misc, "%s:\n", __func__);
-	if (uart_console(uport)) {
-		console_stop(uport->cons);
-		disable_irq(uport->irq);
-	} else {
-		msm_geni_serial_power_on(uport);
-		wait_for_transfers_inflight(uport);
-		msm_geni_serial_stop_tx(uport);
-	}
-
 	if (!uart_console(uport)) {
 		if (msm_port->ioctl_count) {
 			int i;
